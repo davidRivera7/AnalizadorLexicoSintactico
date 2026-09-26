@@ -2,32 +2,35 @@
 ```markdown
 # 🔍 Analizador Léxico y Sintáctico (Compilador LL(1))
 
-Proyecto desarrollado para la materia de **Autómatas I**, enfocado en la construcción de un compilador modular en **Java** capaz de validar si un programa fuente cumple estrictamente con las reglas léxicas y sintácticas de una gramática formal[cite: 3].
+Proyecto desarrollado para la materia de **Autómatas I**, enfocado en la construcción de un compilador modular en **Java** capaz de validar si un programa fuente cumple estrictamente con las reglas léxicas y sintácticas de una gramática formal.
 
 ---
 
 ## 🎯 Acerca del Proyecto
 
-Este software procesa un archivo de entrada (`programa.txt`)[cite: 3] y evalúa su conformidad mediante un **Análisis Sintáctico Predictivo Tabular (LL(1))** impulsado por el algoritmo **LIDriver**[cite: 2]. A diferencia de los analizadores tradicionales, el componente léxico opera **bajo demanda**: entrega únicamente un token a la vez conforme el parser lo solicita, manteniendo una **Tabla de Símbolos** optimizada con identificadores únicos y atributos específicos[cite: 2, 3].
+Este software procesa un archivo de entrada (`programa.txt`) y evalúa su conformidad mediante un **Análisis Sintáctico Predictivo Tabular (LL(1))** impulsado por el algoritmo **LIDriver**. A diferencia de los analizadores tradicionales, el componente léxico opera **bajo demanda**: entrega únicamente un token a la vez conforme el parser lo solicita, manteniendo una **Tabla de Símbolos** optimizada con identificadores únicos y atributos específicos.
 
 ---
 
 ## 📐 Gramática del Lenguaje (LC)
 
-El compilador opera basándose en una gramática formal de 28 producciones que soporta la declaración de clases, tipos de datos primitivos (`int`, `float`), asignaciones aritméticas complejas, y sentencias de entrada/salida (`read` y `write`)[cite: 3]:
+El compilador opera basándose en una gramática formal de 28 producciones que soporta la declaración de clases, tipos de datos primitivos (`int`, `float`), asignaciones aritméticas complejas, y sentencias de entrada/salida (`read` y `write`):
 
 ```text
-1. programa      → class id { lista_sent }
-2. lista_sent    → sentencia sent_final
-3. sent_final    → sentencia sent_final | ε
-5. sentencia     → tipo lista_id; | id = expresion ; | read ( lista_id ) ; | write ( lista_expr ) ;
-9. lista_id      → id id_final
-12. lista_expr   → expresion lista_exprfinal
-15. expresion    → expr_arit expr_final
-18. expr_arit    → ( expresion ) | id | enteros | reales
-22. tipo         → int | float
-24. operador     → + | - | * | /
-28. inicio       → programa $
+1. programa         → class id { lista_sent }
+2. lista_sent       → sentencia sent_final
+3. sent_final       → sentencia sent_final | ε
+5. sentencia        → tipo lista_id; | id = expresion ; | read ( lista_id ) ; | write ( lista_expr ) ;
+9. lista_id         → id id_final
+10 id_final         → , id id_final | ε
+12. lista_expr      → expresion lista_exprfinal
+13. lista_exprfinal → , expresion lista_exprfinal | ε
+15. expresion       → expr_arit expr_final
+16. expr_final      → operador expr_arit expr_final | ε
+18. expr_arit       → ( expresion ) | id | enteros | reales
+22. tipo            → int | float
+24. operador        → + | - | * | /
+28. inicio          → programa $
 
 ```
 
@@ -108,24 +111,17 @@ Sigue estos pasos para clonar el repositorio y ejecutar el proyecto:
 
 1. **Clonar el repositorio:**
 ```bash
-git clone [https://github.com/tu-usuario/AnalizadorLexicoSintactico.git](https://github.com/tu-usuario/AnalizadorLexicoSintactico.git)
+git clone [https://github.com/davidRivera7/AnalizadorLexicoSintactico.git](https://github.com/davidRivera7/AnalizadorLexicoSintactico.git)
 cd AnalizadorLexicoSintactico
 
 ```
 
 
 2. **Ejecutar el proyecto:**
-* Mediante **Apache Ant**:
+* De forma manual mediante terminal de Java:
 ```bash
-ant run
-
-```
-
-
-* O de forma manual mediante terminal de Java:
-```bash
-javac -encoding UTF-8 -d build/classes -sourcepath src src/main/Main.java
-java -Dfile.encoding=UTF-8 -cp build/classes main.Main
+javac -d build/classes -sourcepath src src/main/Main.java
+java -cp build/classes main.Main
 
 ```
 
@@ -140,5 +136,3 @@ java -Dfile.encoding=UTF-8 -cp build/classes main.Main
 * Diseño e implementación de compiladores e intérpretes basados en teoría de autómatas.
 * Manejo de tablas de símbolos dinámicas y análisis léxico bajo demanda.
 * Aplicación práctica de gramáticas libres de contexto y tablas de parsing LL(1).
-
-```
